@@ -200,16 +200,16 @@ class Rook:
                 print(f'This is your hand:')
                 self.enumerate_list(winner - 1)
                 print('-------------------------------------------------------------')
-                # conf = input(f'Do you wish to start the game? (Y or N): ')
-                # if conf == 'Y' or 'y':
-                #     count += 1
-                #     continue
-                # # else:
-                #     count = 0
-                #     print(self.discardPile)
-                #     for card in self.discardPile:
-                #         self.players[winner - 1].get_hand().append(card)
-                #     print('------------------------------------------------------------')
+                conf = input(f'Do you wish to start the game? (Y or N): ')
+                if conf == 'Y' or 'y':
+                    count += 1
+                    continue
+                else:
+                    count = 0
+                    print(self.discardPile)
+                    for card in self.discardPile:
+                        self.players[winner - 1].get_hand().append(card)
+                    print('------------------------------------------------------------')
             self.enumerate_list(winner - 1)
             self.cardToDiscard = input((f'Player {winner}, please discard five cards one by one separated by a space. '))
             remove_cards = self.cardToDiscard.split(' ')
@@ -218,14 +218,10 @@ class Rook:
                 remove_card_values.append(self.players[winner - 1].get_hand()[int(value) - 1])
             
             for card in remove_card_values:
+                self.discardPile.append(card)
                 self.players[winner - 1].get_hand().remove(card)
             count = 5
-            # if self.cardToDiscard > 0 and self.cardToDiscard < len(self.players[winner - 1].get_hand()):
-            #     card = self.players[winner - 1].get_hand().pop(self.cardToDiscard - 1)
-            #     self.discardPile.append(card)
-            #     count += 1
-            # else:
-            #     print(f'Invalid Input (too high or too low)')
+
         print('------------------------------------------------------------')
         #discardPile DOES work correctly. All cards are appended for end of the game.
         self.game_loop(self.player_won.get_pos())
@@ -251,26 +247,30 @@ class Rook:
         This method should store the scores of each team (player1 & player3, player2 & player4)
         based on how many points each team had depending on factors handled in the calculateScore func.
         """
-        if self.player_won == 1 or self.player_won == 3:
+        if self.player_won == 0 or self.player_won == 2:
             if self.team1_points < self.final_bet:
                 self.team1_overall -= self.final_bet
-                print(f'Team 1 got set by {self.final_bet}, their score is now {self.team1_overall}. ')
+                self.team2_overall += self.team2_points
+                print(f'Team 1 got set by {self.final_bet}, thier score is now {self.team1_overall}. ')
             else:
                 self.team1_overall += self.team1_points
+                self.team2_overall += self.team2_points
                 print(f'Team 1 won, their score is now {self.team1_overall}')
         else:
             if self.team2_points < self.final_bet:
                 self.team2_overall -= self.final_bet
+                self.team1_overall += self.team1_points
                 print(f'Team 2 got set by {self.final_bet}, thier score is now {self.team2_overall}')
             else:
-                self.team2_overall += self.final_bet
+                self.team2_overall += self.team2_points
+                self.team1_overall += self.team1_points
                 print(f'Team 2 won, their score is now {self.team2_overall}')
         
         confirmation = input('Do you wish to start the next game? (Y or N): ')
         if confirmation == 'Y':
-            self.start()
+            self.restart()
         else:
-            print('yikes so we done now')
+            return
         
 
     def calculate_score(self, winner : int, pile : dict):
@@ -338,7 +338,6 @@ class Rook:
                     highest = card.number
                     winner = player
         
-        
         self.calculate_score(winner, pile)
         print(f'Player {winner + 1} won the hand.')
         print('----------------------------------------------------------------------------')
@@ -397,7 +396,21 @@ class Rook:
                 pile = {}
                 turnCount = 0
                 currentTurn = winner + 1
-                
+
+    def restart(self):
+        self.player_won = 0
+        self.final_bet = 0
+        self.players = []
+        self.kitty = []
+        self.choice = ''
+        self.rook_bird_high = False
+        self.discardPile = []
+        self.trump = ''
+        self.team1_points = 0 # P1 and P3
+        self.team2_points = 0 # P2 and P4
+        self.calc_score_count = 0
+
+        self.start()
 
 if __name__ == '__main__':
     game = Rook()
