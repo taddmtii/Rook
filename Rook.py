@@ -211,6 +211,13 @@ class Rook:
             for card in remove_card_values:
                 self.discardPile.append(card)
                 self.players[winner - 1].get_hand().remove(card)
+
+            print('------------------------------------------------------------')
+            print('Here is the Discard Pile: ')
+            for num, let in enumerate(self.discardPile, 1):
+                print(f'Card: {num}: {let}')
+            print('------------------------------------------------------------')
+
             count = 5
 
         print('------------------------------------------------------------')
