@@ -23,6 +23,7 @@ class Rook:
         self.team1_overall = 0
         self.team2_overall = 0
         self.calc_score_count = 0
+        self.discardPoints = 0
     
     def __str__(self):
         return f'{self.color}, {self.number}'
@@ -217,7 +218,6 @@ class Rook:
             for num, let in enumerate(self.discardPile, 1):
                 print(f'Card: {num}: {let}')
             print('------------------------------------------------------------')
-
             count = 5
 
         print('------------------------------------------------------------')
@@ -245,6 +245,7 @@ class Rook:
         This method should store the scores of each team (player1 & player3, player2 & player4)
         based on how many points each team had depending on factors handled in the calculateScore func.
         """
+
         if self.player_won == 0 or self.player_won == 2:
             if self.team1_points < self.final_bet:
                 self.team1_overall -= self.final_bet
@@ -276,6 +277,17 @@ class Rook:
         Determines if which ever team won is set or not, if they had enough points to win and how many points the other
         team had so that it can be added to the score_board func.
         """
+
+        self.discardPoints = 0
+        for card in self.discardPile:
+            if card.number == 5:
+                self.discardPoints += 5
+            elif card.number == 10 or card.number == 14:
+                self.discardPoints += 10
+            elif card.color == 'Rook Bird':
+                self.discardPoints += 20
+        #TODO: winner of last hand, discardPoints should be appended. NOT the winner of the bet.
+
         points = 0
         for card in pile.values():
             if card.number == 5:
@@ -407,6 +419,7 @@ class Rook:
         self.team1_points = 0 # P1 and P3
         self.team2_points = 0 # P2 and P4
         self.calc_score_count = 0
+        self.discardPoints = 0
 
         self.start()
 
