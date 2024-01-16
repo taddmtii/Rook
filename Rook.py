@@ -1,14 +1,5 @@
 """
 Tadd Trumbull II (with assistance from Jacob Bahn)
-12/17/2023 - Initial Setup
-12/21/2023 - Restructuring of code to be more OO.
-12/21/2023 - Implementation of Player class to consruct player objects for easier access.
-12/22/2023 - Finished betting logic and started implementing deal_kitty, discard and pre game functionality.
-12/27/2023 - Finished discard functionality from winning players hand.
-12/31/2023 - Reworked counters for player turn functionality in game_logic() func
-1/14/2024 - fixed game_logic() func to actually pop cards and put them into the list that gets passed into the check_win func
-1/15/2024 - added check_win(), check score functionality and win functionality. Several other small improvements.
-
 My take on the card game Rook.
 """
 
