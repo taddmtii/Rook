@@ -2,7 +2,7 @@
 Tadd Trumbull II (with assistance from Jacob Bahn)
 My take on the card game Rook.
 """
-
+import sys
 import random
 from player import Player
 
@@ -142,6 +142,7 @@ class Rook:
             new_bet = input(f'Player {i + 1} What would you like to bet? (currently at {highest}, type pass to pass): ')
             if new_bet == '120':
                 self.player_won = self.players[i]
+                print(self.player_won)
                 self.final_bet = 120
                 break
             if new_bet.isdigit() and int(new_bet) > highest and int(new_bet) % 5 == 0:
@@ -193,15 +194,15 @@ class Rook:
                 self.enumerate_list(winner - 1)
                 print('-------------------------------------------------------------')
                 conf = input(f'Do you wish to start the game? (Y or N): ')
-                if conf == 'Y' or 'y':
+                if conf == 'Y' or conf == 'y':
                     count += 1
                     continue
-                else:
+                elif conf == 'N' or 'n':
                     count = 0
-                    print(self.discardPile)
                     for card in self.discardPile:
                         self.players[winner - 1].get_hand().append(card)
                     print('------------------------------------------------------------')
+                    continue
             self.enumerate_list(winner - 1)
             self.cardToDiscard = input((f'Player {winner}, please discard five cards one by one separated by a space. '))
             remove_cards = self.cardToDiscard.split(' ')
@@ -246,7 +247,7 @@ class Rook:
         based on how many points each team had depending on factors handled in the calculateScore func.
         """
 
-        if self.player_won == 0 or self.player_won == 2:
+        if self.player_won.get_pos() == 1 or self.player_won.get_pos() == 3:
             if self.team1_points < self.final_bet:
                 self.team1_overall -= self.final_bet
                 self.team2_overall += self.team2_points
@@ -265,11 +266,17 @@ class Rook:
                 self.team1_overall += self.team1_points
                 print(f'Team 2 won, their score is now {self.team2_overall}')
         
+        print(f'Overall Team 1 Points: {self.team1_overall}')
+        print(f'Overall Team 2 Points: {self.team2_overall}')
+        
         confirmation = input('Do you wish to start the next game? (Y or N): ')
         if confirmation == 'Y':
             self.restart()
+        elif confirmation == 'N':
+            sys.exit(0)
         else:
-            return
+            print('Invalid Input')
+            
         
 
     def calculate_score(self, winner : int, pile : dict):
@@ -382,7 +389,7 @@ class Rook:
         while True:
             self.enumerate_list(currentTurn - 1)
             card = input(f'Player {currentTurn}, please select a card: ')
-            if int(card) <= len(self.players[currentTurn - 1].get_hand()):
+            if int(card) <= len(self.players[currentTurn - 1].get_hand()) or card == '' or type(int(card) == int):
                 hasStartingCardColor = False
                 for playerCard in self.players[currentTurn - 1].get_hand():
                     if playerCard.color == startingCard.color:
@@ -412,6 +419,7 @@ class Rook:
                     turnCount = 0
                     currentTurn = winner + 1
             else:
+                print('Not a valid card')
                 continue
             
 
