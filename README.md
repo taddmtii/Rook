@@ -13,3 +13,6 @@
 
 ## Install / Run Project
     You do not need any external tools or libraries to run Rook.py .
+
+## Known Issues:
+    When saying no to being ready to play the game in discard(), program does not remove some elements (?)
