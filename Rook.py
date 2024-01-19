@@ -362,50 +362,58 @@ class Rook:
         self.enumerate_list(currentTurn - 1)
         pile = {}
         startingCardInput = input(f'Player {currentTurn}, please select a card to start the trick: ')
-        startingCard = self.players[currentTurn - 1].get_hand()[int(startingCardInput) - 1]
-        print('-------------------------------------------------------------------------')
-        print(f'Player {currentTurn} played {startingCard}! ')
-        print('-------------------------------------------------------------------------')
-        card = self.players[currentTurn - 1].get_hand().pop(int(startingCardInput) - 1)
-        pile[currentTurn - 1] = card
-        if currentTurn == 4:
-            currentTurn = 1
-        else:
-            currentTurn += 1
+        if int(startingCardInput) <= len(self.players[currentTurn - 1].get_hand()):
+            startingCard = self.players[currentTurn - 1].get_hand()[int(startingCardInput) - 1]
+            print('-------------------------------------------------------------------------')
+            print(f'Player {currentTurn} played {startingCard}! ')
+            print('-------------------------------------------------------------------------')
+            card = self.players[currentTurn - 1].get_hand().pop(int(startingCardInput) - 1)
+            pile[currentTurn - 1] = card
+            if currentTurn == 4:
+                currentTurn = 1
+            else:
+                currentTurn += 1
 
-        turnCount = 1
+            turnCount = 1
+        else:
+            print('Not a valid card')
+        
         #Then goes to next player.
         while True:
             self.enumerate_list(currentTurn - 1)
             card = input(f'Player {currentTurn}, please select a card: ')
-            hasStartingCardColor = False
-            for playerCard in self.players[currentTurn - 1].get_hand():
-                if playerCard.color == startingCard.color:
-                    hasStartingCardColor = True
-                    break
-            card1 = self.players[currentTurn - 1].get_hand()[int(card) - 1]
-            if turnCount == 0:
-                startingCard = card1
-            if turnCount != 0 and hasStartingCardColor and (card1.color != startingCard.color) and card1.color != 'Rook Bird':
-                print('Pick a card of the same color.')
-                continue
-            print('-------------------------------------------------------------------------')
-            print(f'Player {currentTurn} played {card1}! ')
-            print('-------------------------------------------------------------------------')
-            accCard = self.players[currentTurn - 1].get_hand().pop(int(card) - 1)
-            pile[currentTurn - 1] = accCard
-            currentTurn += 1
-            turnCount += 1
+            if int(card) <= len(self.players[currentTurn - 1].get_hand()):
+                hasStartingCardColor = False
+                for playerCard in self.players[currentTurn - 1].get_hand():
+                    if playerCard.color == startingCard.color:
+                        hasStartingCardColor = True
+                        break
+                card1 = self.players[currentTurn - 1].get_hand()[int(card) - 1]
+                if turnCount == 0:
+                    startingCard = card1
+                if turnCount != 0 and hasStartingCardColor and (card1.color != startingCard.color) and card1.color != 'Rook Bird':
+                    print('Pick a card of the same color.')
+                    continue
+                print('-------------------------------------------------------------------------')
+                print(f'Player {currentTurn} played {card1}! ')
+                print('-------------------------------------------------------------------------')
+                accCard = self.players[currentTurn - 1].get_hand().pop(int(card) - 1)
+                pile[currentTurn - 1] = accCard
+                currentTurn += 1
+                turnCount += 1
 
-            # Once currentTurn is 5, it resets
-            if currentTurn == 5:
-                currentTurn = 1
-                
-            if turnCount == 4:
-                winner = self.check_win(pile)
-                pile = {}
-                turnCount = 0
-                currentTurn = winner + 1
+                # Once currentTurn is 5, it resets
+                if currentTurn == 5:
+                    currentTurn = 1
+                    
+                if turnCount == 4:
+                    winner = self.check_win(pile)
+                    pile = {}
+                    turnCount = 0
+                    currentTurn = winner + 1
+            else:
+                continue
+            
 
     def restart(self):
         self.player_won = 0
