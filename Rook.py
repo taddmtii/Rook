@@ -1,7 +1,3 @@
-"""
-Tadd Trumbull II (with assistance from Jacob Bahn)
-My take on the card game Rook.
-"""
 import sys
 import random
 from player import Player
