@@ -209,6 +209,9 @@ class Rook:
             self.enumerate_list(winner - 1)
             self.cardToDiscard = input((f'Player {winner}, please discard five cards one by one separated by a space. '))
             remove_cards = self.cardToDiscard.split(' ')
+            if remove_cards == '' or len(remove_cards) != 5:
+                print('Invalid, please try again.')
+                continue
             remove_card_values = []
             for value in remove_cards:
                 remove_card_values.append(self.players[winner - 1].get_hand()[int(value) - 1])
@@ -288,8 +291,6 @@ class Rook:
                 sys.exit(0)
             else:
                 print('Invalid Input')
-            
-        
 
     def calculate_score(self, winner : int, pile : dict):
         """
@@ -441,7 +442,6 @@ class Rook:
         self.players = []
         self.kitty = []
         self.choice = ''
-        self.rook_bird_high = False
         self.discardPile = []
         self.trump = ''
         self.team1_points = 0 # P1 and P3
