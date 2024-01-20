@@ -108,7 +108,6 @@ class Rook:
             card = random.choice(deck)
             player4_hand.append(card)
             deck.remove(card)
-    
 
         #initalize 4 player objects
         player1 = Player(1, player1_hand)
@@ -164,7 +163,6 @@ class Rook:
         print(f'Player {i + 1} won the bet with {self.final_bet}!')
         print('------------------------------------------------------------')
         self.deal_kitty(self.player_won.get_pos())
-
     
     def deal_kitty(self, winner):
         """
@@ -364,13 +362,9 @@ class Rook:
 
         print(f'Team 1 Points: {self.team1_points}')
         print(f'Team 2 Points: {self.team2_points}')
-
         if self.calc_score_count == 9:
             self.calc_score_count = 0
             self.round_win(winner)
-        
-        #self.team1_points P1 P3
-        #self.team2_points P2 P4
 
     def check_win(self, pile : dict):
         """
@@ -382,14 +376,12 @@ class Rook:
         rook_bird_player = -1
         winner = -1
         highest = 0
-
         for player, card in pile.items():
             if card.color == self.trump:
                 trumps_played[card.number] = player
                 # Red, 8 (Player 1) -> {8 : 0}
             elif card.color == 'Rook Bird':
                 rook_bird_player = player
-
         if rook_bird_player != -1 and (self.rook_bird_high or len(trumps_played) == 0):
             winner = rook_bird_player
         elif len(trumps_played) > 0:
@@ -400,7 +392,6 @@ class Rook:
                 if card.number > highest:
                     highest = card.number
                     winner = player
-        
         self.calculate_score(winner, pile)
         print(f'Player {winner + 1} won the hand.')
         print('----------------------------------------------------------------------------')
@@ -426,7 +417,6 @@ class Rook:
                 currentTurn = 1
             else:
                 currentTurn += 1
-
             turnCount = 1
         else:
             print('Not a valid card')
@@ -463,7 +453,7 @@ class Rook:
                 # Once currentTurn is 5, it resets
                 if currentTurn == 5:
                     currentTurn = 1
-                    
+                
                 if turnCount == 4:
                     winner = self.check_win(pile)
                     pile = {}
@@ -473,7 +463,6 @@ class Rook:
                 print('Not a valid card')
                 continue
             
-
     def restart(self):
         self.player_won = 0
         self.final_bet = 0
