@@ -399,7 +399,7 @@ class Rook:
         self.enumerate_list(currentTurn - 1)
         pile = {}
         startingCardInput = input(f'Player {currentTurn}, please select a card to start the trick: ')
-        if int(startingCardInput) <= len(self.players[currentTurn - 1].get_hand()):
+        if startingCardInput != '' or int(startingCardInput) <= len(self.players[currentTurn - 1].get_hand()):
             startingCard = self.players[currentTurn - 1].get_hand()[int(startingCardInput) - 1]
             print('-------------------------------------------------------------------------')
             print(f'Player {currentTurn} played {startingCard}! ')
@@ -419,12 +419,12 @@ class Rook:
         while True:
             self.enumerate_list(currentTurn - 1)
             card = input(f'Player {currentTurn}, please select a card: ')
-            if int(card) > len(self.players[currentTurn - 1].get_hand()):
+            if card == '' or int(card) > len(self.players[currentTurn - 1].get_hand()):
                 print('----------------------------------------')
                 print('Invalid Input, not a card.')
                 print('----------------------------------------')
                 continue
-            if int(card) <= len(self.players[currentTurn - 1].get_hand()) or card == '' or type(int(card) == int):
+            if card != '' or int(card) <= len(self.players[currentTurn - 1].get_hand()) or type(int(card) == int):
                 hasStartingCardColor = False
                 for playerCard in self.players[currentTurn - 1].get_hand():
                     if playerCard.color == startingCard.color:
