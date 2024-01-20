@@ -12,7 +12,7 @@ Turns are then taken until all four players have played a card, resulting in the
 Python Standard Library
 
 ## Install / Run Project
-You do not need any external tools or libraries to run Rook.py .
+You do not need any external tools or libraries to run Rook.py.
 
 ## Known Issues:
-When saying no to being ready to play the game in discard(), program does not remove some elements (?)
+self.discardpoints not being added to anyones overall points.

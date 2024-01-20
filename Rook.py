@@ -25,6 +25,8 @@ class Rook:
         self.calc_score_count = 0
         self.discardPoints = 0
         self.point_goal = 0
+        self.team1_isSet = False
+        self.team2_isSet = False
     
     def __str__(self):
         return f'{self.color}, {self.number}'
@@ -248,7 +250,25 @@ class Rook:
                 continue
         return self.trump
     
-    def round_win(self):
+    def discard_add(self, winner):
+        """
+        Adds discard points to whichever team is awarded them.
+        """
+        self.discardPoints = 0
+        if self.team1_isSet == False:
+            for card in self.discardPile:
+                if card.number == 5:
+                    self.discardPoints += 5
+                elif card.number == 10 or card.number == 14:
+                    self.discardPoints += 10
+                elif card.color == 'Rook Bird':
+                    self.discardPoints += 20
+        if winner % 2 == 0:
+            self.team1_overall += self.discardPoints
+        else:
+            self.team2_overall += self.discardPoints
+
+    def round_win(self, winner):
         """
         This method should store the scores of each team (player1 & player3, player2 & player4)
         based on how many points each team had depending on factors handled in the calculateScore func.
@@ -257,7 +277,9 @@ class Rook:
         if self.player_won.get_pos() == 1 or self.player_won.get_pos() == 3:
             if self.team1_points < self.final_bet:
                 self.team1_overall -= self.final_bet
+                self.team1_isSet = True
                 self.team2_overall += self.team2_points
+                self.discard_add(winner)
                 print(f'Team 1 got set by {self.final_bet}, thier score is now {self.team1_overall}. ')
             else:
                 self.team1_overall += self.team1_points
@@ -266,7 +288,9 @@ class Rook:
         else:
             if self.team2_points < self.final_bet:
                 self.team2_overall -= self.final_bet
+                self.team2_isSet = True
                 self.team1_overall += self.team1_points
+                self.discard_add(winner)
                 print(f'Team 2 got set by {self.final_bet}, thier score is now {self.team2_overall}')
             else:
                 self.team2_overall += self.team2_points
@@ -338,25 +362,13 @@ class Rook:
             self.team2_points += points
         self.calc_score_count += 1
 
-        if self.calc_score_count == 9:
-            self.round_win()
-            self.calc_score_count = 0
-
-            self.discardPoints = 0
-            for card in self.discardPile:
-                if card.number == 5:
-                    self.discardPoints += 5
-                elif card.number == 10 or card.number == 14:
-                    self.discardPoints += 10
-                elif card.color == 'Rook Bird':
-                    self.discardPoints += 20
-            if winner % 2 == 0:
-                self.team1_overall += self.discardPoints
-            else:
-                self.team2_overall += self.discardPoints
         print(f'Team 1 Points: {self.team1_points}')
         print(f'Team 2 Points: {self.team2_points}')
 
+        if self.calc_score_count == 9:
+            self.calc_score_count = 0
+            self.round_win(winner)
+        
         #self.team1_points P1 P3
         #self.team2_points P2 P4
 
