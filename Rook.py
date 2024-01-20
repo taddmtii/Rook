@@ -56,7 +56,7 @@ class Rook:
         print('------------------------------------------------------------')
         self.point_goal = int(input("What would you like the point goal to be? (300 or 500 recommended): "))
         print('------------------------------------------------------------')
-        self.create_deck()
+        self.restart()
 
 
     def create_deck(self):
@@ -162,7 +162,7 @@ class Rook:
         print(f'Player {i + 1} won the bet with {self.final_bet}!')
         print('------------------------------------------------------------')
         self.deal_kitty(self.player_won.get_pos())
-        print(f'Alright! Trump is {self.trump}.')
+
     
     def deal_kitty(self, winner):
         """
@@ -277,33 +277,41 @@ class Rook:
         print(f'Overall Team 2 Points: {self.team2_overall}')
         
         if self.team1_overall >= self.point_goal:
+            print(f'Overall Team 1 Points: {self.team1_overall}')
+            print(f'Overall Team 2 Points: {self.team2_overall}')
             print('---------------------------------------------------')
             print(f'Team 1 wins the game with {self.team1_overall}! ')
             print('---------------------------------------------------')
             confirmation = input('Do you wish to start a new game? (Y or N): ')
             if confirmation == 'Y':
-                self.restart()
+                self.start()
+                self.team1_overall = 0
+                self.team2_overall = 0
             elif confirmation == 'N':
                 sys.exit(0)
             else:
                 print('Invalid Input')
         elif self.team2_overall >= self.point_goal:
+            print(f'Overall Team 1 Points: {self.team1_overall}')
+            print(f'Overall Team 2 Points: {self.team2_overall}')
             print('---------------------------------------------------')
             print(f'Team 2 Wins the game with {self.team2_overall}! ')
             print('---------------------------------------------------')
             confirmation = input('Do you wish to start a new game? (Y or N): ')
             if confirmation == 'Y':
-                self.restart()
                 self.start()
+                self.team1_overall = 0
+                self.team2_overall = 0
             elif confirmation == 'N':
                 sys.exit(0)
             else:
                 print('Invalid Input')
         else:
+            print(f'Overall Team 1 Points: {self.team1_overall}')
+            print(f'Overall Team 2 Points: {self.team2_overall}')
             confirmation = input('Do you wish to start the next game? (Y or N): ')
             if confirmation == 'Y':
                 self.restart()
-                self.start()
             elif confirmation == 'N':
                 sys.exit(0)
             else:
@@ -314,16 +322,6 @@ class Rook:
         Determines if which ever team won is set or not, if they had enough points to win and how many points the other
         team had so that it can be added to the score_board func.
         """
-
-        # self.discardPoints = 0
-        # for card in self.discardPile:
-        #     if card.number == 5:
-        #         self.discardPoints += 5
-        #     elif card.number == 10 or card.number == 14:
-        #         self.discardPoints += 10
-        #     elif card.color == 'Rook Bird':
-        #         self.discardPoints += 20
-        
 
         points = 0
         for card in pile.values():
@@ -343,13 +341,19 @@ class Rook:
         if self.calc_score_count == 9:
             self.round_win()
             self.calc_score_count = 0
+
+            self.discardPoints = 0
             for card in self.discardPile:
                 if card.number == 5:
-                    points += 5
+                    self.discardPoints += 5
                 elif card.number == 10 or card.number == 14:
-                    points += 10
+                    self.discardPoints += 10
                 elif card.color == 'Rook Bird':
-                    points += 20
+                    self.discardPoints += 20
+            if winner % 2 == 0:
+                self.team1_overall += self.discardPoints
+            else:
+                self.team2_overall += self.discardPoints
         print(f'Team 1 Points: {self.team1_points}')
         print(f'Team 2 Points: {self.team2_points}')
 
@@ -470,7 +474,6 @@ class Rook:
         self.team2_points = 0 # P2 and P4
         self.calc_score_count = 0
         self.discardPoints = 0
-
         self.create_deck()
 
 if __name__ == '__main__':
