@@ -21,11 +21,3 @@ class Player:
     
     def set_bet(self, bet):
         self.bet = bet
-
-    def add_card(self, card):
-        hand = self.get_hand()
-        hand.append(card)
-    
-    def remove_card(self, card):
-        hand = self.get_hand()
-        hand.remove(card)

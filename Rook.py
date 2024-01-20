@@ -127,6 +127,7 @@ class Rook:
         print('-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*')
         print(f'The kitties face up card is {faceUpCard}')
         print('-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*')
+        maxBet = 120
         highest = 70 # base bid
         i = 0 #player index
         p_count = 0 # pass count
@@ -143,6 +144,9 @@ class Rook:
                 self.player_won = self.players[i]
                 self.final_bet = 120
                 break
+            if int(new_bet) > 120:
+                print('That bid is too high! There are only 120 points in the deck. Please try again.')
+                continue
             if new_bet.isdigit() and int(new_bet) > highest and int(new_bet) % 5 == 0:
                 self.players[i].set_bet(int(new_bet))
                 highest = int(new_bet)

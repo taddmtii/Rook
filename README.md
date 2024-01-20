@@ -15,4 +15,4 @@ Python Standard Library
 You do not need any external tools or libraries to run Rook.py.
 
 ## Known Issues:
-self.discardpoints not being added to anyones overall points.
+N/A
