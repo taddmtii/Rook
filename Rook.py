@@ -36,7 +36,6 @@ class Rook:
         """
         Handles explanation and beginning information needed to start the game.
         """
-
         welcome_str = r"""
  __          __  _                            _          _____             _    _ 
  \ \        / / | |                          | |        |  __ \           | |  | |
@@ -199,13 +198,15 @@ class Rook:
                 if conf == 'Y' or conf == 'y':
                     count += 1
                     continue
-                elif conf == 'N' or 'n':
+                elif conf == 'N' or conf == 'n':
                     count = 0
-                    for card in self.discardPile:
+                    cards_to_append = list(self.discardPile)  # copy of discardPile
+                    for card in cards_to_append:
                         self.players[winner - 1].get_hand().append(card)
                         self.discardPile.remove(card)
                     print('------------------------------------------------------------')
                     continue
+
             self.enumerate_list(winner - 1)
             self.cardToDiscard = input((f'Player {winner}, please discard five cards one by one separated by a space. '))
             remove_cards = self.cardToDiscard.split(' ')
@@ -277,16 +278,32 @@ class Rook:
         
         if self.team1_overall >= self.point_goal:
             print('---------------------------------------------------')
-            print(f'Team 1 wins the game with {self.team1_overall} ')
+            print(f'Team 1 wins the game with {self.team1_overall}! ')
             print('---------------------------------------------------')
+            confirmation = input('Do you wish to start a new game? (Y or N): ')
+            if confirmation == 'Y':
+                self.restart()
+            elif confirmation == 'N':
+                sys.exit(0)
+            else:
+                print('Invalid Input')
         elif self.team2_overall >= self.point_goal:
             print('---------------------------------------------------')
-            print(f'Team 2 Wins the game with {self.team2_overall} ')
+            print(f'Team 2 Wins the game with {self.team2_overall}! ')
             print('---------------------------------------------------')
+            confirmation = input('Do you wish to start a new game? (Y or N): ')
+            if confirmation == 'Y':
+                self.restart()
+                self.start()
+            elif confirmation == 'N':
+                sys.exit(0)
+            else:
+                print('Invalid Input')
         else:
             confirmation = input('Do you wish to start the next game? (Y or N): ')
             if confirmation == 'Y':
                 self.restart()
+                self.start()
             elif confirmation == 'N':
                 sys.exit(0)
             else:
@@ -298,15 +315,15 @@ class Rook:
         team had so that it can be added to the score_board func.
         """
 
-        self.discardPoints = 0
-        for card in self.discardPile:
-            if card.number == 5:
-                self.discardPoints += 5
-            elif card.number == 10 or card.number == 14:
-                self.discardPoints += 10
-            elif card.color == 'Rook Bird':
-                self.discardPoints += 20
-        #TODO: winner of last hand, discardPoints should be appended. NOT the winner of the bet.
+        # self.discardPoints = 0
+        # for card in self.discardPile:
+        #     if card.number == 5:
+        #         self.discardPoints += 5
+        #     elif card.number == 10 or card.number == 14:
+        #         self.discardPoints += 10
+        #     elif card.color == 'Rook Bird':
+        #         self.discardPoints += 20
+        
 
         points = 0
         for card in pile.values():
@@ -402,6 +419,11 @@ class Rook:
         while True:
             self.enumerate_list(currentTurn - 1)
             card = input(f'Player {currentTurn}, please select a card: ')
+            if int(card) > len(self.players[currentTurn - 1].get_hand()):
+                print('----------------------------------------')
+                print('Invalid Input, not a card.')
+                print('----------------------------------------')
+                continue
             if int(card) <= len(self.players[currentTurn - 1].get_hand()) or card == '' or type(int(card) == int):
                 hasStartingCardColor = False
                 for playerCard in self.players[currentTurn - 1].get_hand():
