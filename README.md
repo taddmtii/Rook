@@ -1,6 +1,6 @@
-# Welcome to Rook (v0.5): a trick-taking game made in 1906 by Hasbro.
+# Welcome to Rook (v1.0): a trick-taking game made in 1906 by Hasbro.
 
-### NOTE: This program is in an unstable state that lacks error/bounds checking and only utilizes a CLI. Additionaly, the program is not complete as of 1/19/2023.
+### NOTE: This program utilizes a CLI and is my first project.
 
 ## Program Comprehension
 
