@@ -52,7 +52,11 @@ class Rook:
         else:
             print('Try again')
         print('------------------------------------------------------------')
-        self.point_goal = int(input("What would you like the point goal to be? (300 or 500 recommended): "))
+        self.point_goal = input("What would you like the point goal to be? (300 or 500 recommended): ")
+        if self.point_goal.isdigit():
+            self.point_goal = int(self.point_goal)
+        else:
+            print('Not a Valid Entry')
         print('------------------------------------------------------------')
         self.restart()
 
@@ -143,7 +147,7 @@ class Rook:
                 self.player_won = self.players[i]
                 self.final_bet = 120
                 break
-            if int(new_bet) > 120:
+            if new_bet.isdigit() and int(new_bet) > 120:
                 print('--------------------------------------------------------------------------------')
                 print('That bid is too high! There are only 120 points in the deck. Please try again.')
                 print('--------------------------------------------------------------------------------')
@@ -295,9 +299,6 @@ class Rook:
                 self.team2_overall += self.team2_points
                 self.team1_overall += self.team1_points
                 print(f'Team 2 won, their score is now {self.team2_overall}')
-        
-        print(f'Overall Team 1 Points: {self.team1_overall}')
-        print(f'Overall Team 2 Points: {self.team2_overall}')
         
         if self.team1_overall >= self.point_goal:
             print(f'Overall Team 1 Points: {self.team1_overall}')
